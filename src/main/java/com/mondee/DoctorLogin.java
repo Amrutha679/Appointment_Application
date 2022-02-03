@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletConfig;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DoctorRegister extends HttpServlet{
+public class DoctorLogin extends HttpServlet{
 	Connection connection = null;
 	PreparedStatement ps = null;
 	public void init(ServletConfig config) {
@@ -33,33 +34,30 @@ public class DoctorRegister extends HttpServlet{
 		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		String email = request.getParameter("email");
-		String phone = request.getParameter("phone");
-		//long mobile = Long.parseLong(phone);
-		String specialist = request.getParameter("specialist");
 		
 		PrintWriter pw = response.getWriter();
 		
-		String sql = "insert into doctor(name,password,email,phone,specialist)values(?,?,?,?,?)";
 		
+		String sql = "select name,password from doctor where (name = ? and password = ?)";
 		try {
 			ps = connection.prepareStatement(sql);
 			ps.setString(1, username);
 			ps.setString(2, password);
-			ps.setString(3, email);
-			ps.setString(4, phone);
-			ps.setString(5, specialist);
 			
-			int x = ps.executeUpdate();
-			if(x!=0) {
-				response.sendRedirect("./doctor_login.html");
-			}
+			ResultSet rs = ps.executeQuery();
 			
+			 while (rs.next()) {
+				 
+				 	pw.println("<html><body><h1>");
+					pw.println("Login Successfully</h1></body></html>");
+			      }
+			 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 }
+
 
 
 

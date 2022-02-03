@@ -8,4 +8,14 @@
 	<servlet-name>first</servlet-name>
 	<url-pattern>/firstservlet</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>second</servlet-name>
+	<servlet-class>com.mondee.DoctorLogin</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+	<servlet-name>second</servlet-name>
+	<url-pattern>/secondservlet</url-pattern>
+	</servlet-mapping>
 </web-app>
