@@ -16,7 +16,8 @@ ps.setString(1, username);
 ps.setString(2, password);
 ResultSet rs = ps.executeQuery();
 if(rs.next())
-	response.sendRedirect("home_page.html");
+	session.setAttribute("pid",rs.getInt(1));
+	response.sendRedirect("patient_home.html");
 %>
 
 </html>

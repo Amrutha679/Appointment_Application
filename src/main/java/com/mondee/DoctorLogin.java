@@ -12,6 +12,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class DoctorLogin extends HttpServlet{
 	Connection connection = null;
@@ -34,22 +35,22 @@ public class DoctorLogin extends HttpServlet{
 		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		
 		PrintWriter pw = response.getWriter();
-		
-		
-		String sql = "select name,password from doctor where (name = ? and password = ?)";
+		String sql = "select * from doctor where name = ? and password = ?";
 		try {
 			ps = connection.prepareStatement(sql);
 			ps.setString(1, username);
 			ps.setString(2, password);
-			
+			HttpSession hs = request.getSession();
 			ResultSet rs = ps.executeQuery();
 			
-			 while (rs.next()) {
-				 
-				 	pw.println("<html><body><h1>");
-					pw.println("Login Successfully</h1></body></html>");
+			 if(rs.next()) {
+				 	hs.setAttribute("name",username);
+				 	hs.setAttribute("id",rs.getInt(1));
+				 	hs.setAttribute("specialist", rs.getString("specialist"));
+				 	response.sendRedirect("./doctor_home.html");
+				 	//pw.print("homepage");
+				 	//pw.print("Login Successfully!!!");
 			      }
 			 
 		} catch (SQLException e) {
